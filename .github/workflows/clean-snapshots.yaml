@@ -13,14 +13,6 @@ on:
         description: "Number of versions to keep"
         required: false
         default: "5"
-      included-tags:
-        description: "Tags to include for deletion"
-        required: false
-        default: ""
-      excluded-tags:
-        description: "Tags to exclude from deletion"
-        required: false
-        default: "release*"
       dry-run:
         description: "Enable dry-run mode"
         required: false
@@ -47,9 +39,8 @@ jobs:
         uses: netcracker/qubership-workflow-hub/actions/container-package-cleanup@feature/cleanup-packages
         with:
           threshold-days: ${{ github.event.inputs.threshold-days || 8 }}
+          package-type: maven
           threshold-versions: ${{ github.event.inputs.threshold-versions || 1 }}
-          included-tags: ${{ github.event.inputs.included-tags || 'dev*' }}
-          excluded-tags: ${{ github.event.inputs.excluded-tags || 'release*' }}
           dry-run: ${{ github.event.inputs.dry-run || 'false' }}
         env:
           PACKAGE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
